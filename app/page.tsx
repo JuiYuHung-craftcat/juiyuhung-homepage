@@ -1,4 +1,4 @@
-import { Header } from "./(main)/header";
+import { Header } from "@/app/(main)/header";
 
 export default function Home() {
   return (
