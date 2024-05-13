@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Roboto_Mono } from "next/font/google";
 import "./globals.css";
+import { Header } from "@/app/(main)/header";
 
 const inter = Roboto_Mono({ subsets: ["latin"] });
 
@@ -17,9 +18,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className="bg-blue_darkest_variation text-blue_lightest_variation"
+      className="bg-zinc-900 text-terminal_green"
     >
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }
