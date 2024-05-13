@@ -9,9 +9,9 @@ export const Header = () => {
             </h2>
           </a>
           <div className="items-center gap-6 flex">
-            <a href="/">Posts</a>
-            <a href="/resume">Resume</a>
-            <a href="https://github.com/JuiYuHung-craftcat">GitHub</a>
+            <a href="/">POSTS</a>
+            <a href="/resume">RESUME</a>
+            <a href="https://github.com/JuiYuHung-craftcat">GITHUB</a>
           </div>
         </nav>
       </div>
