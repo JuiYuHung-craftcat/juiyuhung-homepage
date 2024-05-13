@@ -1,8 +1,8 @@
 export const Header = () => {
   return (
-    <header className="fixed w-full p-2 z-20 backdrop-blur-md bg-blue_primary">
+    <header className="fixed w-full p-2 z-20 backdrop-blur-md">
       <div className="mx-auto max-w-3xl">
-        <nav className="flex items-center gap-3 text-base">
+        <nav className="flex items-center gap-12 text-base">
           <a href="/" className="group">
             <h2 className="font-semibold tracking-tighter p-2 font-mplus text-lg">
               JuiYuHung
