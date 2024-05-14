@@ -1,5 +1,5 @@
 # JuiYuHung Homepage
 It is my homepage source code.
-Contents:
+## Contents:
 * Posts
 * Resume
