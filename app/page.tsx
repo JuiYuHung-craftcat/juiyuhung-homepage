@@ -1,7 +1,15 @@
-import { getSortedPostsData } from "../lib/posts";
+import { getSortedPostsData } from "../lib/posts.ts";
+
+interface PostData {
+  id: string;
+  date: string;
+  title: string;
+}
+
+type PostDataArray = Array<PostData>;
 
 export default function Home() {
-  const allPostsData = getSortedPostsData();
+  const allPostsData: PostDataArray = getSortedPostsData();
   return (
     <div className="max-w-3xl mx-auto px-8 pt-16">
       {allPostsData.map(({ id, date, title }) => (
