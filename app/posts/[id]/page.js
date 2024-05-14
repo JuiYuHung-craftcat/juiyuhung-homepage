@@ -9,12 +9,14 @@ export async function generateStaticParams() {
 export default async function Post({ params }) {
   const post = await getPostData(params.id);
   return (
-    <div className="p-24">
+    <div className="pt-24 px-4 mx-auto max-w-3xl">
       <Head>
         <title>{post.id}</title>
       </Head>
       <article>
-        <h1>{post.id}</h1>
+        <h1 className="text-xl font-bold">{post.title}</h1>
+        <h2>{post.date}</h2>
+        <br />
         <div dangerouslySetInnerHTML={{ __html: post.contentHtml }} />
       </article>
     </div>
