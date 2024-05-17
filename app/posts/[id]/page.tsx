@@ -6,8 +6,15 @@ export async function generateStaticParams() {
   return [params.map((param) => ({ id: param }))];
 }
 
-export default async function Post({ params }) {
-  const post = await getPostData(params.id);
+interface PostType {
+  id: string;
+  title: string;
+  date: string;
+  contentHtml: string;
+}
+
+export default async function Post({ params }: { params: { id: string } }) {
+  const post: PostType = (await getPostData(params.id)) as any;
   return (
     <div className="pt-24 px-4 mx-auto max-w-3xl">
       <Head>
