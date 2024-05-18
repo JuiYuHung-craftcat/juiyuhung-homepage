@@ -7,9 +7,9 @@ const Resume = () => {
     <section className="py-24 px-4 mx-auto max-w-3xl">
       <div className="flex md:justify-between justify-evenly items-center">
         <div>
-          <p className="text-xl">Jui-Yu Hung</p>
-          <p className="text-lg">Mail: hi@juiyuhung.com</p>
-          <p className="text-lg">Phone: +886-975253061</p>
+          <p className="md:text-xl text-lg">Jui-Yu Hung</p>
+          <p className="md:text-lg text-base">Mail: hi@juiyuhung.com</p>
+          <p className="md:text-lg text-base">Phone: +886-975253061</p>
         </div>
         <div className="hover:rotate-1 md:block hidden">
           <Image
@@ -47,15 +47,17 @@ const Resume = () => {
         <h2 className="text-xl md:text-left text-center">EDUCATIONS</h2>
         <hr className="border-terminal_green my-2" />
         <div className="flex justify-between">
-          <p className="font-bold">National Tsing-Hua University</p>
-          <p>Hsin-Chu, Taiwan</p>
+          <p className="font-bold md:text-base text-sm">
+            National Tsing-Hua University
+          </p>
+          <p className="md:text-base text-sm">Hsin-Chu, Taiwan</p>
         </div>
         <div className="flex justify-between pt-4">
           <p className="font-bold md:block hidden">
             Master of Engineering in Department of Electrical Engineering
           </p>
-          <p className="font-bold md:hidden block">Master in EE</p>
-          <p className="font-bold">Jul. 2015</p>
+          <p className="font-bold md:hidden block text-sm">Master in EE</p>
+          <p className="font-bold md:text-base text-sm">Jul. 2015</p>
         </div>
         <ul className="list-disc pl-4 md:text-sm text-xs">
           <li>Expertise field: memory integrated circuit designs</li>
@@ -68,8 +70,8 @@ const Resume = () => {
           <p className="font-bold md:block hidden">
             Bachelor of Engineering in Department of Electrical Engineering
           </p>
-          <p className="font-bold md:hidden block">Bechelor in EE</p>
-          <p className="font-bold">Jun. 2013</p>
+          <p className="font-bold md:hidden block text-sm">Bechelor in EE</p>
+          <p className="font-bold md:text-base text-sm">Jun. 2013</p>
         </div>
         <ul className="list-disc pl-4 md:text-sm text-xs">
           <li>graduating in the honor of the top-rated prize</li>
@@ -83,24 +85,30 @@ const Resume = () => {
         <hr className="border-terminal_green my-2" />
         <div className="flex justify-between">
           <div>
-            <p className="font-bold">Algoltek, Taipei, Taiwan</p>
-            <p>ASIC Design Engineer</p>
+            <p className="font-bold md:text-base text-sm">
+              Algoltek, Taipei, Taiwan
+            </p>
+            <p className="md:text-base text-sm">ASIC Design Engineer</p>
           </div>
-          <p className="font-bold">Apr.2022-NOW</p>
+          <p className="font-bold md:text-base text-sm">Apr.2022-NOW</p>
         </div>
         <div className="flex justify-between pt-4">
           <div>
-            <p className="font-bold">MemryX, Taipei, Taiwan</p>
-            <p>ASIC Design Engineer</p>
+            <p className="font-bold md:text-base text-sm">
+              MemryX, Taipei, Taiwan
+            </p>
+            <p className="md:text-base text-sm">ASIC Design Engineer</p>
           </div>
-          <p className="font-bold">Sep.2020-Apr.2022</p>
+          <p className="font-bold md:text-base text-sm">Sep.2020-Apr.2022</p>
         </div>
         <div className="flex justify-between pt-4">
           <div>
-            <p className="font-bold">Mediatek, Taipei, Taiwan</p>
-            <p>ASIC Design Engineer</p>
+            <p className="font-bold md:text-base text-sm">
+              Mediatek, Taipei, Taiwan
+            </p>
+            <p className="md:text-base text-sm">ASIC Design Engineer</p>
           </div>
-          <p className="font-bold">Nov.2015-Sep.2020</p>
+          <p className="font-bold md:text-base text-sm">Nov.2015-Sep.2020</p>
         </div>
       </div>
       <div className="pt-8">
