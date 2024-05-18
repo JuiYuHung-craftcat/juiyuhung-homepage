@@ -34,7 +34,7 @@ const Resume = () => {
         <p>
           Digital IC design engineer with{" "}
           <span className="font-bold">
-            {Date.now() / scalingFactor - (2015 - 1970 + 1)}
+            {(Date.now() / scalingFactor - (2015 - 1970 + 10 / 12)).toFixed(8)}
           </span>{" "}
           years of industry experience. The products include TDMA, LTE, NR
           modem, AI accelerator and high-speed IO(USB,HUB,DP). Skilled at low
@@ -132,13 +132,13 @@ const Resume = () => {
         <p className="font-bold">Published Papers:</p>
         <ul className="list-disc pl-4 md:text-base text-sm">
           <li className="pt-2">
-            “A 256b-wordlength reram-based tcam with 1ns search-time and 14x
+            “A 256b-wordlength ReRAM-based TCAM with 1ns search-time and 14x
             improvement in wordlength-energyefficiency-density product using
-            2.5t1r cell”
+            2.5T1R cell ”
             <span className="font-bold italic">
-              ieee international solid-state circuits conference (isscc)
+              IEEE International Solid-State Circuits Conference (ISSCC)
             </span>
-            , feb 2016.
+            , Feb 2016.
           </li>
           <li className="pt-2">
             “Alow-powersubthreshold-to-superthresholdlevel-shifterforsub-0.5VembeddedresistiveRAM
@@ -197,7 +197,7 @@ const Resume = () => {
           <li>Language: Rust</li>
           <li>
             Description: A SystemVerilog text editor that supports syntax
-            highlight, auto-correct, definition and declaration trace and auto
+            highlight, auto-correct, definition, declaration trace and auto
             complete
           </li>
           <li>

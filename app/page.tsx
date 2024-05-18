@@ -11,7 +11,7 @@ type PostDataArray = Array<PostData>;
 export default function Home() {
   const allPostsData: PostDataArray = getSortedPostsData();
   return (
-    <div className="max-w-3xl mx-auto px-8 pt-16">
+    <div className="max-w-3xl mx-auto px-8 pt-24">
       {allPostsData.map(({ id, date, title }) => (
         <a key={id} href={`posts/${id}`}>
           <div className="p-2 hover:bg-terminal_green hover:text-black">
