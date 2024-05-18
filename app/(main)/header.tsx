@@ -4,11 +4,11 @@ export const Header = () => {
       <div className="mx-auto max-w-3xl">
         <nav className="flex items-center gap-12 text-base">
           <a href="/" className="group">
-            <h2 className="font-semibold tracking-tighter p-2 font-mplus text-lg">
+            <h2 className="font-semibold tracking-tighter p-2 font-mplus text-xl">
               [JuiYuHung]$
             </h2>
           </a>
-          <div className="items-center gap-6 flex">
+          <div className="items-center gap-6 flex text-xl">
             <a className="hover:underline decoration-2" href="/">
               POSTS
             </a>
