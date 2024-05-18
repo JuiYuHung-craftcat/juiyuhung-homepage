@@ -21,7 +21,7 @@ const Resume = () => {
         </div>
         <div className="hover:rotate-1 md:hidden">
           <Image
-            src="/avatar.jpg"
+            src="/avatar/avatar.jpg"
             alt="JuiYuHung-Avatar"
             width="120"
             height="120"

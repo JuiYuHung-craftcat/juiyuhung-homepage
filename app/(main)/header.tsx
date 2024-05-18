@@ -2,13 +2,13 @@ export const Header = () => {
   return (
     <header className="fixed w-full p-2 z-20 backdrop-blur-md">
       <div className="mx-auto max-w-3xl">
-        <nav className="flex items-center gap-12 text-base">
+        <nav className="flex items-center md:gap-12 gap-6 text-base">
           <a href="/" className="group">
             <h2 className="font-semibold tracking-tighter p-2 font-mplus text-xl">
               [JuiYuHung]$
             </h2>
           </a>
-          <div className="items-center gap-6 flex text-xl">
+          <div className="items-center md:gap-6 gap-3 flex md:text-xl text-base">
             <a className="hover:underline decoration-2" href="/">
               POSTS
             </a>
