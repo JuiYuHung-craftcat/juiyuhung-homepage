@@ -1,8 +1,29 @@
+"use client"; // This is client component
 import Image from "next/image";
-
-const scalingFactor: number = 1000 * 60 * 60 * 24 * 365;
+import { useState, useEffect } from "react";
 
 const Resume = () => {
+  const [hydrated, setHydrated] = useState(false);
+  const [tenure, setTenure] = useState<string>("{Loading Calculator}");
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (hydrated) {
+      const interval = setInterval(() => {
+        setTenure(
+          (
+            Date.now() / (1000 * 60 * 60 * 24 * 365) -
+            (2015 - 1970 + 10 / 12)
+          ).toFixed(8),
+        );
+      }, 10);
+      return () => clearInterval(interval);
+    }
+  }, [tenure, hydrated]);
+
   return (
     <section className="py-24 px-4 mx-auto max-w-3xl">
       <div className="flex md:justify-between justify-evenly items-center">
@@ -33,14 +54,12 @@ const Resume = () => {
         <hr className="border-terminal_green my-2" />
         <p>
           Digital IC design engineer with{" "}
-          <span className="font-bold">
-            {(Date.now() / scalingFactor - (2015 - 1970 + 10 / 12)).toFixed(8)}
-          </span>{" "}
-          years of industry experience. The products include TDMA, LTE, NR
-          modem, AI accelerator and high-speed IO(USB,HUB,DP). Skilled at low
-          cost and low power IP design. Experienced in integration, front-end
-          and middle-end design flow. Capable of building design verification
-          environment in SystemVerilog & UVM.
+          <span className="font-bold">{tenure}</span> years of industry
+          experience. The products include TDMA, LTE, NR modem, AI accelerator
+          and high-speed IO(USB,HUB,DP). Skilled at low cost and low power IP
+          design. Experienced in integration, front-end and middle-end design
+          flow. Capable of building design verification environment in
+          SystemVerilog & UVM.
         </p>
       </div>
       <div className="pt-8">
