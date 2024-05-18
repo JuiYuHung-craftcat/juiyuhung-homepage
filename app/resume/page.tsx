@@ -50,7 +50,7 @@ const Resume = () => {
           <p className="font-bold md:text-base text-sm">
             National Tsing-Hua University
           </p>
-          <p className="md:text-base text-sm">Hsin-Chu, Taiwan</p>
+          <p className="md:text-base text-sm">Taiwan</p>
         </div>
         <div className="flex justify-between pt-4">
           <p className="font-bold md:block hidden">
@@ -85,27 +85,21 @@ const Resume = () => {
         <hr className="border-terminal_green my-2" />
         <div className="flex justify-between">
           <div>
-            <p className="font-bold md:text-base text-sm">
-              Algoltek, Taipei, Taiwan
-            </p>
+            <p className="font-bold md:text-base text-sm">Algoltek, Taiwan</p>
             <p className="md:text-base text-sm">ASIC Design Engineer</p>
           </div>
           <p className="font-bold md:text-base text-sm">Apr.2022-NOW</p>
         </div>
         <div className="flex justify-between pt-4">
           <div>
-            <p className="font-bold md:text-base text-sm">
-              MemryX, Taipei, Taiwan
-            </p>
+            <p className="font-bold md:text-base text-sm">MemryX, Taiwan</p>
             <p className="md:text-base text-sm">ASIC Design Engineer</p>
           </div>
           <p className="font-bold md:text-base text-sm">Sep.2020-Apr.2022</p>
         </div>
         <div className="flex justify-between pt-4">
           <div>
-            <p className="font-bold md:text-base text-sm">
-              Mediatek, Taipei, Taiwan
-            </p>
+            <p className="font-bold md:text-base text-sm">Mediatek, Taiwan</p>
             <p className="md:text-base text-sm">ASIC Design Engineer</p>
           </div>
           <p className="font-bold md:text-base text-sm">Nov.2015-Sep.2020</p>
