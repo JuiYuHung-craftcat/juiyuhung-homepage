@@ -97,7 +97,7 @@ const Resume = () => {
         </div>
         <div className="flex justify-between pt-4">
           <div>
-            <p classname="font-bold">Mediatek, Taipei, Taiwan</p>
+            <p className="font-bold">Mediatek, Taipei, Taiwan</p>
             <p>ASIC Design Engineer</p>
           </div>
           <p className="font-bold">Nov.2015-Sep.2020</p>
