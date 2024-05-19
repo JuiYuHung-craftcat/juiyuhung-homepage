@@ -129,9 +129,9 @@ const Resume = () => {
         <hr className="border-terminal_green my-2" />
         <ul className="md:text-base text-sm">
           <li>
-            <span className="font-bold">programming language:</span>
-            <br /> verilog-2005, systemverilog, tcl, c/c++, perl, lua, rust,
-            javascript, typescript, sql
+            <span className="font-bold">Programming language:</span>
+            <br /> Verilog-2005, SystemVerilog, Tcl, C/C++, Perl, Lua, Rust,
+            Javascript, Typescript, SQL
           </li>
           <li className="pt-4">
             <span className="font-bold">Tools:</span>
