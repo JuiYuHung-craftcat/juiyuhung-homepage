@@ -25,7 +25,7 @@ const Resume = () => {
   }, [tenure, hydrated]);
 
   return (
-    <section className="py-24 px-4 mx-auto max-w-3xl">
+    <section className="pt-24 pb-12 px-4 mx-auto max-w-3xl">
       <div className="flex md:justify-between justify-evenly items-center">
         <div>
           <p className="md:text-xl text-lg">Jui-Yu Hung</p>
