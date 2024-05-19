@@ -218,8 +218,8 @@ const Resume = () => {
           <li>Language: Rust</li>
           <li>
             Description: A SystemVerilog text editor that supports syntax
-            highlight, auto-correct, definition, declaration trace and auto
-            complete
+            highlight, auto-correct, definition trace, declaration trace and
+            auto complete
           </li>
           <li>
             Module Structure: A front-end text editor, a language server
