@@ -14,7 +14,7 @@ export default function Home() {
     <div className="max-w-3xl mx-auto px-8 pt-24">
       {allPostsData.map(({ id, date, title }) => (
         <a key={id} href={`posts/${id}`}>
-          <div className="p-2 hover:bg-terminal_green hover:text-black">
+          <div className="mb-2 p-2 hover:bg-terminal_green hover:text-black border-terminal_green border-2 border-dashed">
             <p className="font-bold text-lg"># {title}</p>@{date}
           </div>
         </a>
