@@ -1,4 +1,10 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+
 export const Header = () => {
+  const pathname = usePathname();
+  const resumeCurrent = pathname == "/resume";
   return (
     <header className="fixed w-full p-2 z-20 backdrop-blur-md">
       <div className="mx-auto max-w-3xl">
@@ -9,10 +15,22 @@ export const Header = () => {
             </h2>
           </a>
           <div className="items-center md:gap-6 gap-3 flex md:text-xl text-base">
-            <a className="hover:underline decoration-2" href="/">
+            <a
+              className={
+                "hover:underline decoration-2 " +
+                (resumeCurrent ? "" : "text-black bg-terminal_green")
+              }
+              href="/"
+            >
               POSTS
             </a>
-            <a className="hover:underline decoration-2" href="/resume">
+            <a
+              className={
+                "hover:underline decoration-2 " +
+                (resumeCurrent ? "text-black bg-terminal_green" : "")
+              }
+              href="/resume"
+            >
               RESUME
             </a>
             <a
