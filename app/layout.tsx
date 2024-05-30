@@ -9,6 +9,12 @@ const inter = Roboto_Mono({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "JuiYuHung-Homepage",
   description: "JuiYuHung's homepage",
+  icons: [
+    {
+      url: "/favicon.ico",
+      href: "/favicon.ico",
+    },
+  ],
 };
 
 export default function RootLayout({
