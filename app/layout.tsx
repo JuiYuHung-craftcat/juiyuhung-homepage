@@ -11,8 +11,8 @@ export const metadata: Metadata = {
   description: "JuiYuHung's homepage",
   icons: [
     {
-      url: "/favicon.ico",
-      href: "/favicon.ico",
+      url: "/icon.ico",
+      href: "/icon.ico",
     },
   ],
 };
