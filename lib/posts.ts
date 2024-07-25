@@ -3,6 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
+import { ContainerWithChildren } from "postcss/lib/container";
 
 const postsDirectory = path.join(process.cwd(), "posts");
 
@@ -64,7 +65,12 @@ export async function getPostData(id: string) {
   const processedContent = await remark()
     .use(html)
     .process(matterResult.content);
-  const contentHtml = processedContent.toString();
+  let contentHtml = processedContent.toString();
+
+  // Add css to certain tag
+  contentHtml = contentHtml.replace("<h1>", "<h1 class='text-xl font-bold'>");
+  contentHtml = contentHtml.replace("<h2>", "<h2 class='text-lg font-bold'>");
+  contentHtml = contentHtml.replace("<h3>", "<h3 class='text-base'>");
 
   // Combine the data with the id and contentHtml
   return {
