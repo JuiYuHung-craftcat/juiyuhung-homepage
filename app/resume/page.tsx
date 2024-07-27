@@ -140,7 +140,7 @@ const Resume = () => {
           </li>
           <li className="pt-4">
             <span className="font-bold">Frameworks:</span>
-            <br /> UVM, React, Astro, HTMX
+            <br /> UVM
           </li>
         </ul>
       </div>
