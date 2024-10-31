@@ -30,7 +30,6 @@ const Resume = () => {
         <div>
           <p className="md:text-xl text-lg">Jui-Yu Hung</p>
           <p className="md:text-lg text-base">Mail: hi@juiyuhung.com</p>
-          <p className="md:text-lg text-base">Phone: +886-975253061</p>
         </div>
         <div className="hover:rotate-1 md:block hidden">
           <Image
