@@ -103,10 +103,21 @@ const Resume = () => {
         <hr className="border-terminal_green my-2" />
         <div className="flex justify-between">
           <div>
+            <p className="font-bold md:text-base text-sm">
+              VICI Holdings, Taiwan
+            </p>
+            <p className="md:text-base text-sm">
+              High-Frequency Trade Digital Design Engineer
+            </p>
+          </div>
+          <p className="font-bold md:text-base text-sm">Dec.2024-NOW</p>
+        </div>
+        <div className="flex justify-between pt-4">
+          <div>
             <p className="font-bold md:text-base text-sm">Algoltek, Taiwan</p>
             <p className="md:text-base text-sm">ASIC Design Engineer</p>
           </div>
-          <p className="font-bold md:text-base text-sm">Apr.2022-NOW</p>
+          <p className="font-bold md:text-base text-sm">Apr.2022-Dec.2024</p>
         </div>
         <div className="flex justify-between pt-4">
           <div>
