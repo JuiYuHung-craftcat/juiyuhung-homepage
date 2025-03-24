@@ -106,9 +106,7 @@ const Resume = () => {
             <p className="font-bold md:text-base text-sm">
               VICI Holdings, Taiwan
             </p>
-            <p className="md:text-base text-sm">
-              High-Frequency Trade Digital Design Engineer
-            </p>
+            <p className="md:text-base text-sm">HFT Digital Design Engineer</p>
           </div>
           <p className="font-bold md:text-base text-sm">Dec.2024-NOW</p>
         </div>
