@@ -54,8 +54,8 @@ const Resume = () => {
         <p>
           Digital IC design engineer with{" "}
           <span className="font-bold">{tenure}</span> years of industry
-          experience. The products include TDMA, LTE, NR modem, AI accelerator ,
-          high-speed IO(USB,HUB,DP, PCIe) and HFT system. Skilled at low cost,
+          experience. The products include TDMA, LTE, NR modem, AI accelerator,
+          high-speed IO(USB,HUB,DP,PCIe) and HFT system. Skilled at low cost,
           low power IP and low latency design. Experienced in integration,
           front-end and middle-end design flow. Capable of building design
           verification environment in SystemVerilog & UVM.
