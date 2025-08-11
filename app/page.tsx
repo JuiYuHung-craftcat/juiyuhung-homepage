@@ -55,11 +55,10 @@ const Resume = () => {
           Digital IC design engineer with{" "}
           <span className="font-bold">{tenure}</span> years of industry
           experience. The products include TDMA, LTE, NR modem, AI accelerator,
-          high-speed IO(USB,HUB,DP,PCIe,Ethernet), TCP/IP protocol and HFT
-          system. Skilled at low cost, low power and low latency design.
-          Experienced in integration, front-end and middle-end design flow.
-          Capable of building design verification environment in SystemVerilog &
-          UVM.
+          high-speed IO(USB,HUB,DP,PCIe,Ethernet), TCP/IP protocol . Skilled at
+          low cost, low power and low latency design. Experienced in
+          integration, front-end and middle-end design flow. Capable of building
+          design verification environment in SystemVerilog & UVM.
         </p>
       </div>
       <div className="pt-8">
@@ -102,15 +101,6 @@ const Resume = () => {
       <div className="pt-8">
         <h2 className="text-xl md:text-left text-center">EMPLOYMENT</h2>
         <hr className="border-terminal_green my-2" />
-        <div className="flex justify-between">
-          <div>
-            <p className="font-bold md:text-base text-sm">
-              VICI Holdings, Taiwan
-            </p>
-            <p className="md:text-base text-sm">HFT Digital Design Engineer</p>
-          </div>
-          <p className="font-bold md:text-base text-sm">Dec.2024-NOW</p>
-        </div>
         <div className="flex justify-between pt-4">
           <div>
             <p className="font-bold md:text-base text-sm">Algoltek, Taiwan</p>
