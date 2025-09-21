@@ -222,24 +222,6 @@ const Resume = () => {
             <span className="text-black bg-terminal_green">Released</span>
           </li>
         </ul>
-        <p className="font-bold pt-4">SystemVerilog Editor</p>
-        <ul className="list-disc pl-4 md:text-base text-sm">
-          <li>Language: Rust</li>
-          <li>
-            Description: A SystemVerilog text editor that supports syntax
-            highlight, auto-correct, definition trace, declaration trace and
-            auto complete
-          </li>
-          <li>
-            Module Structure: A front-end text editor, a language server
-            protocol and a back-end language server that includes tree-sitter
-            and analyser
-          </li>
-          <li>
-            Project Status:{" "}
-            <span className="text-black bg-red-600">Developing</span>
-          </li>
-        </ul>
       </div>
     </section>
   );
