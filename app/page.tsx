@@ -195,7 +195,8 @@ const Resume = () => {
           <li>Language: Python, Typescript</li>
           <li>
             Description: AI-powered cryptocurrency trading system with automated
-            strategy execution and real-time market analysis
+            strategy execution and real-time market analysis. Using Pytorch to train
+            model and do backtesting. Using Node.js to do live trading.
           </li>
           <li>Features: Reinforcement Learning, Backtesting, ONNX</li>
           <li>
