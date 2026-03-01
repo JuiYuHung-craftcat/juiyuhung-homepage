@@ -57,7 +57,7 @@ const Resume = () => {
           experience. The products include TDMA, LTE, NR modem, AI accelerator,
           high-speed IO(USB,HUB,DP,PCIe,Ethernet), TCP/IP protocol and HFT
           system. Skilled at low cost, low power and low latency design.
-          Experienced in integration, front-end and middle-end design flow.
+          Experienced in integration, front-end, middle-end and FPGA design flow.
           Capable of building design verification environment in SystemVerilog &
           UVM.
         </p>
@@ -145,7 +145,7 @@ const Resume = () => {
           <li className="pt-4">
             <span className="font-bold">Tools:</span>
             <br /> VCS, Xrun, Verdi, Simvision, DC, Genus, VC Formal, LEC, STA,
-            SG-lint, SG-cdc, PTPX, Power-Artist
+            SG-lint, SG-cdc, PTPX, Power-Artist, Vivado
           </li>
           <li className="pt-4">
             <span className="font-bold">Frameworks:</span>
@@ -190,38 +190,31 @@ const Resume = () => {
       <div className="pt-8">
         <h2 className="text-xl md:text-left text-center">SIDE PROJECTS</h2>
         <hr className="border-terminal_green my-2" />
-        <p className="font-bold">Register Abstration Layer Auto-Generator:</p>
+        <p className="font-bold">Crypto AI Trading System:</p>
         <ul className="list-disc pl-4 md:text-base text-sm">
-          <li>Language: Javascript</li>
+          <li>Language: Python, Typescript</li>
           <li>
-            Description: User maintain an xlsx file and the tool will generate
-            all needed files
+            Description: AI-powered cryptocurrency trading system with automated
+            strategy execution and real-time market analysis
           </li>
-          <li>Input: Register information in xlsx format</li>
-          <li>
-            Output: Docx, html, json, rtl, header file, verification pattern
-          </li>
+          <li>Features: Reinforcement Learning, Backtesting, ONNX</li>
           <li>
             Project Status:{" "}
-            <span className="text-black bg-terminal_green">Released</span>
+            <span className="text-black bg-terminal_green">Active</span>
+          </li>
+          <li>
+            Interim results:
           </li>
         </ul>
-        <p className="font-bold pt-4">Design Environment Generator:</p>
-        <ul className="list-disc pl-4 md:text-base text-sm">
-          <li>Language: Rust</li>
-          <li>
-            Description: Auto-generate ASIC design environment with executing
-            command, tcls of tools, common ip and common verification blocks
-          </li>
-          <li>
-            Support Tools: VCS, SpyGlass(lint, CDC), Design Compiler, Formality,
-            Static-Analysis
-          </li>
-          <li>
-            Project Status:{" "}
-            <span className="text-black bg-terminal_green">Released</span>
-          </li>
-        </ul>
+        <div className="pt-4">
+          <Image
+            src="/page/results.png"
+            alt="Crypto AI Trading Results"
+            width="800"
+            height="600"
+            className="w-full h-auto invert"
+          />
+        </div>
       </div>
     </section>
   );
