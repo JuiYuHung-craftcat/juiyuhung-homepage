@@ -94,9 +94,6 @@ const Resume = () => {
         </div>
         <ul className="list-disc pl-4 md:text-sm text-xs">
           <li>Graduating in the honor of the top-rated prize</li>
-          <li>
-            Honorary membership of the phi tau phi scholastic honor society
-          </li>
         </ul>
       </div>
       <div className="pt-8">
