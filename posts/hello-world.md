@@ -49,5 +49,5 @@ Tables work too:
 
 ### Publishing
 
-Add the file, commit, and deploy. The post list and the page are generated at build time.
+Add the file, commit, and deploy. The post list and the page are generated at build time.\
 JY HERE!
