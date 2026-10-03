@@ -9,6 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@blocknote/core": "^0.55.0",
+    "@blocknote/mantine": "^0.55.0",
+    "@blocknote/react": "^0.55.0",
+    "@mantine/core": "^8.3.18",
+    "@mantine/hooks": "^8.3.18",
     "@types/three": "^0.183.1",
     "gray-matter": "^4.0.3",
     "next": "^16.3.8",

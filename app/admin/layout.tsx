@@ -6,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  return <section className="pt-24 pb-12 px-4 mx-auto max-w-5xl relative z-10">{children}</section>;
+  return <section className="pt-24 pb-12 px-4 mx-auto max-w-5xl relative">{children}</section>;
 }

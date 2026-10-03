@@ -58,7 +58,8 @@ export const PUT = safely(async (req, { params }) => {
     console.error("[admin/posts] save", e);
     const msg = (e as Error).message;
     // 409/422 from GitHub: the file changed since it was loaded, or already exists.
-    const status = /\((409|422)\)/.test(msg) ? 409 : 502;
+    // 424, not 502: Cloudflare replaces 502/503/504 bodies with its own error page.
+    const status = /\((409|422)\)/.test(msg) ? 409 : 424;
     return NextResponse.json({ error: msg }, { status });
   }
 });
@@ -74,6 +75,6 @@ export const DELETE = safely(async (req, { params }) => {
     return NextResponse.json({ ok: true });
   } catch (e) {
     console.error("[admin/posts] delete", e);
-    return NextResponse.json({ error: (e as Error).message }, { status: 502 });
+    return NextResponse.json({ error: (e as Error).message }, { status: 424 });
   }
 });

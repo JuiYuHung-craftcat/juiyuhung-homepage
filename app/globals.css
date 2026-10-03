@@ -189,3 +189,30 @@ pre {
   list-style: none;
   margin-left: -1.25rem;
 }
+
+/* Admin block editor: site font, room for the drag handles, menus above the fixed header */
+.bn-root {
+  --bn-ui-base-z-index: 30 !important;
+}
+
+.bn-root,
+.bn-root .bn-default-styles,
+.bn-root .bn-editor {
+  font-family: inherit !important;
+}
+
+.admin-block-editor .bn-editor {
+  padding-inline: 54px 16px;
+  font-size: 0.95rem;
+}
+
+.admin-block-editor .bn-editor th,
+.admin-block-editor .bn-editor td {
+  border-color: rgb(0 187 0 / 0.35) !important;
+}
+
+.admin-block-editor .bn-inline-content code {
+  background: rgb(0 187 0 / 0.12);
+  border-radius: 0.25rem;
+  padding: 0.1rem 0.3rem;
+}

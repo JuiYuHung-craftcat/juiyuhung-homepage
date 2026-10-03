@@ -1,10 +1,17 @@
 "use client";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { EditablePost } from "@/lib/github-posts";
 
-type View = "write" | "preview" | "split";
+type View = "visual" | "markdown" | "preview";
+
+// The block editor touches the DOM on load, so it only runs in the browser.
+const BlockEditor = dynamic(() => import("./block-editor"), {
+  ssr: false,
+  loading: () => <p className="text-sm opacity-50 p-4">Loading editor...</p>,
+});
 type Status = { kind: "idle" | "busy" | "ok" | "error"; text: string; link?: string };
 
 const slugify = (s: string) =>
@@ -39,7 +46,7 @@ export default function Editor({ initial }: { initial: EditablePost | null }) {
   const [summary, setSummary] = useState(initial?.summary ?? "");
   const [body, setBody] = useState(initial?.body ?? "");
   const [sha, setSha] = useState(initial?.sha ?? null);
-  const [view, setView] = useState<View>("write");
+  const [view, setView] = useState<View>("visual");
   const [previewHtml, setPreviewHtml] = useState("");
   const [dirty, setDirty] = useState(false);
   const [status, setStatus] = useState<Status>({ kind: "idle", text: "" });
@@ -64,7 +71,7 @@ export default function Editor({ initial }: { initial: EditablePost | null }) {
 
   // Live preview, rendered by the same markdown pipeline as the public site.
   useEffect(() => {
-    if (view === "write") return;
+    if (view !== "preview") return;
     const t = setTimeout(async () => {
       const res = await fetch("/api/admin/preview", {
         method: "POST",
@@ -272,14 +279,21 @@ export default function Editor({ initial }: { initial: EditablePost | null }) {
       </div>
 
       <div className="flex items-center gap-1 pt-5 pb-2">
-        {tab("write", "WRITE")}
+        {tab("visual", "EDITOR")}
+        {tab("markdown", "MARKDOWN")}
         {tab("preview", "PREVIEW")}
-        {tab("split", "SPLIT", "hidden md:inline-block")}
-        <span className="ml-auto text-xs opacity-50">Markdown · Ctrl/⌘+S to publish</span>
+        <span className="ml-auto text-xs opacity-50 hidden md:inline">
+          {view === "visual" ? "Type / for blocks · " : ""}Ctrl/⌘+S to publish
+        </span>
       </div>
 
-      <div className={view === "split" ? "grid md:grid-cols-2 gap-4" : ""}>
-        {view !== "preview" && (
+      <div>
+        {view === "visual" && (
+          <div className="min-h-[60vh] rounded-lg border-2 border-terminal_green/30 focus-within:border-terminal_green/70 py-4">
+            <BlockEditor markdown={body} onChange={edit(setBody)} />
+          </div>
+        )}
+        {view === "markdown" && (
           <textarea
             ref={bodyRef}
             value={body}
@@ -290,7 +304,7 @@ export default function Editor({ initial }: { initial: EditablePost | null }) {
             className="w-full min-h-[60vh] bg-black/40 border-2 border-terminal_green/30 focus:border-terminal_green/70 rounded-lg p-4 font-mono text-sm leading-relaxed outline-none resize-y"
           />
         )}
-        {view !== "write" && (
+        {view === "preview" && (
           <div className="min-h-[60vh] rounded-lg border-2 border-terminal_green/20 p-4 overflow-auto">
             {body.trim() ? (
               <div className="post-content" dangerouslySetInnerHTML={{ __html: previewHtml }} />
