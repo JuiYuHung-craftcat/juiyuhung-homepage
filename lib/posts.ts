@@ -3,6 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
+import gfm from "remark-gfm";
 
 const postsDirectory = path.join(process.cwd(), "posts");
 
@@ -72,7 +73,7 @@ export function getAllPostIds() {
 }
 
 export async function markdownToHtml(markdown: string) {
-  return (await remark().use(html).process(markdown)).toString();
+  return (await remark().use(gfm).use(html).process(markdown)).toString();
 }
 
 export async function getPostData(id: string): Promise<Post> {

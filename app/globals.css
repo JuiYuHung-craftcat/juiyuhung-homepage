@@ -170,3 +170,22 @@ pre {
   border: 1px solid rgb(0 187 0 / 0.3);
   padding: 0.35rem 0.6rem;
 }
+
+.post-content th {
+  background: rgb(0 187 0 / 0.12);
+  text-align: left;
+}
+
+.post-content del {
+  opacity: 0.6;
+}
+
+.post-content input[type="checkbox"] {
+  accent-color: #00bb00;
+  margin-right: 0.4rem;
+}
+
+.post-content li:has(> input[type="checkbox"]) {
+  list-style: none;
+  margin-left: -1.25rem;
+}

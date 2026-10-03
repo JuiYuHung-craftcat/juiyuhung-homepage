@@ -38,6 +38,13 @@ end
 
 > Quotes look like this.
 
+Tables work too:
+
+| Strategy      | Return | Max drawdown |
+| ------------- | -----: | -----------: |
+| Buy & Hold    | +26.2% |       -28.7% |
+| SMA Crossover |  +6.7% |        -9.5% |
+
 ### Publishing
 
 Add the file, commit, and deploy. The post list and the page are generated at build time.
