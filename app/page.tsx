@@ -39,7 +39,7 @@ const Resume = () => {
               alt="JuiYuHung-Avatar"
               width="190"
               height="190"
-              className="md:w-[190px] md:h-[190px] w-[120px] h-[120px]"
+              className="w-[clamp(120px,25vw,190px)] h-[clamp(120px,25vw,190px)]"
             />
           </div>
         </div>

@@ -19,7 +19,10 @@ const Name3D = () => {
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setSize(container.clientWidth, container.clientHeight, false);
+    renderer.domElement.style.display = "block";
+    renderer.domElement.style.width = "100%";
+    renderer.domElement.style.height = "100%";
     container.appendChild(renderer.domElement);
 
     let textMesh: THREE.Mesh | null = null;
@@ -147,7 +150,9 @@ const Name3D = () => {
       camera.aspect = width / height;
       if (textWidth) fitCamera();
       camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
+      renderer.setSize(width, height, false);
+      // Resizing clears the canvas, so redraw now instead of showing a blank frame.
+      renderer.render(scene, camera);
     };
 
     const resizeObserver = new ResizeObserver(handleResize);
@@ -183,7 +188,7 @@ const Name3D = () => {
   return (
     <div
       ref={containerRef}
-      className="w-full md:h-[200px] h-[120px] cursor-pointer overflow-hidden touch-pan-y"
+      className="w-full h-[clamp(120px,26vw,200px)] cursor-pointer overflow-hidden touch-pan-y"
     />
   );
 };

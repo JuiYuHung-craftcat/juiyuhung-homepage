@@ -43,7 +43,7 @@ export const Header = () => {
           </div>
           <a
             href="mailto:hi@juiyuhung.com"
-            className="order-2 md:order-3 bg-terminal_green text-black md:px-4 px-3 md:py-2 py-1.5 rounded-lg hover:bg-terminal_green/80 transition-all duration-300 flex items-center gap-2 font-semibold md:text-base text-sm max-[359px]:text-xs max-[359px]:px-2"
+            className="order-2 md:order-3 bg-terminal_green text-black md:px-4 px-3 md:py-2 py-1.5 rounded-lg hover:bg-terminal_green/80 transition-colors duration-300 flex items-center gap-2 font-semibold md:text-base text-sm max-[359px]:text-xs max-[359px]:px-2"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 max-[359px]:hidden" viewBox="0 0 20 20" fill="currentColor">
               <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
