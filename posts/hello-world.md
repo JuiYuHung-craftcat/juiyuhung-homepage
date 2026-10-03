@@ -1,8 +1,10 @@
 ---
-title: "Hello World: How This Blog Works"
+title: 'Hello World: How This Blog Works'
 type: blog
-date: "2026-10-03"
-summary: "A sample post showing the markdown format. Replace or delete it once you write your first real post."
+date: '2026-10-03'
+summary: >-
+  A sample post showing the markdown format. Replace or delete it once you write
+  your first real post.
 ---
 
 This is a sample post. Every post is a markdown file in the `posts/` folder, and the file name becomes the URL. This one lives at `posts/hello-world.md`, so it is served at `/posts/hello-world`.
@@ -48,3 +50,4 @@ Tables work too:
 ### Publishing
 
 Add the file, commit, and deploy. The post list and the page are generated at build time.
+JY HERE!
