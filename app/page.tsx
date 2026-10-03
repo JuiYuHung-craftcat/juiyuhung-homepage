@@ -29,30 +29,18 @@ const Resume = () => {
   return (
     <section className="pt-24 pb-12 px-4 mx-auto max-w-3xl relative z-10">
       <div className="animate-fade-in">
-        <div className="flex md:justify-between justify-evenly items-center gap-4">
-          <div className="flex-1 md:block hidden">
+        <div className="flex justify-between items-center gap-4">
+          <div className="flex-1 min-w-0">
             <Name3D />
           </div>
-          <div className="hover:rotate-1 hover:scale-105 transition-transform duration-300 md:block hidden rounded-full overflow-hidden border-2 border-transparent hover:border-terminal_green flex-shrink-0">
+          <div className="hover:rotate-1 hover:scale-105 transition-transform duration-300 rounded-full overflow-hidden border-2 border-transparent hover:border-terminal_green flex-shrink-0">
             <Image
               src="/avatar/avatar.jpg"
               alt="JuiYuHung-Avatar"
               width="190"
               height="190"
+              className="md:w-[190px] md:h-[190px] w-[120px] h-[120px]"
             />
-          </div>
-          <div className="md:hidden flex items-center gap-4">
-            <p className="text-lg font-semibold hover:text-terminal_green transition-colors duration-300">
-              Jui-Yu Hung
-            </p>
-            <div className="hover:rotate-1 hover:scale-105 transition-transform duration-300 rounded-full overflow-hidden border-2 border-transparent hover:border-terminal_green">
-              <Image
-                src="/avatar/avatar.jpg"
-                alt="JuiYuHung-Avatar"
-                width="120"
-                height="120"
-              />
-            </div>
           </div>
         </div>
       </div>

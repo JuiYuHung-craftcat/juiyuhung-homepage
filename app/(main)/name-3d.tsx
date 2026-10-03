@@ -14,15 +14,24 @@ const Name3D = () => {
 
     const container = containerRef.current;
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / 200, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
     camera.position.z = 4;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(container.clientWidth, 200);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(renderer.domElement);
 
     let textMesh: THREE.Mesh | null = null;
+    let textWidth = 0;
     let animationId: number;
+
+    // Move the camera back far enough that the whole name fits the container width.
+    const fitCamera = () => {
+      const halfFov = THREE.MathUtils.degToRad(camera.fov / 2);
+      const fitZ = (textWidth * 0.6) / (Math.tan(halfFov) * camera.aspect);
+      camera.position.z = Math.max(4, fitZ);
+    };
 
     // Add lights
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -41,14 +50,16 @@ const Name3D = () => {
     let mouseY = 0;
     let isHovering = false;
 
-    const handleMouseMove = (event: MouseEvent) => {
+    // Pointer events cover both mouse hover and finger drags on phones.
+    const handleMouseMove = (event: PointerEvent) => {
       const rect = container.getBoundingClientRect();
       mouseX = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       mouseY = -((event.clientY - rect.top) / rect.height) * 2 + 1;
     };
 
-    const handleMouseEnter = () => {
+    const handleMouseEnter = (event: PointerEvent) => {
       isHovering = true;
+      handleMouseMove(event);
     };
 
     const handleMouseLeave = () => {
@@ -57,9 +68,11 @@ const Name3D = () => {
       mouseY = 0;
     };
 
-    container.addEventListener("mousemove", handleMouseMove);
-    container.addEventListener("mouseenter", handleMouseEnter);
-    container.addEventListener("mouseleave", handleMouseLeave);
+    container.addEventListener("pointermove", handleMouseMove);
+    container.addEventListener("pointerenter", handleMouseEnter);
+    container.addEventListener("pointerdown", handleMouseEnter);
+    container.addEventListener("pointerleave", handleMouseLeave);
+    container.addEventListener("pointercancel", handleMouseLeave);
 
     // Load font and create text
     const loader = new FontLoader();
@@ -79,6 +92,9 @@ const Name3D = () => {
         });
 
         geometry.center();
+        geometry.computeBoundingBox();
+        textWidth = geometry.boundingBox!.max.x - geometry.boundingBox!.min.x;
+        fitCamera();
 
         const material = new THREE.MeshStandardMaterial({
           color: 0x0f0,
@@ -126,18 +142,24 @@ const Name3D = () => {
     // Handle resize
     const handleResize = () => {
       const width = container.clientWidth;
-      camera.aspect = width / 200;
+      const height = container.clientHeight;
+      if (!width || !height) return;
+      camera.aspect = width / height;
+      if (textWidth) fitCamera();
       camera.updateProjectionMatrix();
-      renderer.setSize(width, 200);
+      renderer.setSize(width, height);
     };
 
-    window.addEventListener("resize", handleResize);
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(container);
 
     return () => {
-      container.removeEventListener("mousemove", handleMouseMove);
-      container.removeEventListener("mouseenter", handleMouseEnter);
-      container.removeEventListener("mouseleave", handleMouseLeave);
-      window.removeEventListener("resize", handleResize);
+      container.removeEventListener("pointermove", handleMouseMove);
+      container.removeEventListener("pointerenter", handleMouseEnter);
+      container.removeEventListener("pointerdown", handleMouseEnter);
+      container.removeEventListener("pointerleave", handleMouseLeave);
+      container.removeEventListener("pointercancel", handleMouseLeave);
+      resizeObserver.disconnect();
       cancelAnimationFrame(animationId);
       
       if (container.contains(renderer.domElement)) {
@@ -159,7 +181,10 @@ const Name3D = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className="w-full h-[200px] cursor-pointer overflow-hidden" />
+    <div
+      ref={containerRef}
+      className="w-full md:h-[200px] h-[120px] cursor-pointer overflow-hidden touch-pan-y"
+    />
   );
 };
 
