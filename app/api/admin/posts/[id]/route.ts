@@ -18,7 +18,17 @@ const guard = async (id: string) => {
   return null;
 };
 
-export async function PUT(req: Request, { params }: Ctx) {
+const safely =
+  (handler: (req: Request, ctx: Ctx) => Promise<Response>) => async (req: Request, ctx: Ctx) => {
+    try {
+      return await handler(req, ctx);
+    } catch (e) {
+      console.error("[admin/posts]", e);
+      return NextResponse.json({ error: `Server error: ${(e as Error).message}` }, { status: 500 });
+    }
+  };
+
+export const PUT = safely(async (req, { params }) => {
   const { id } = await params;
   const denied = await guard(id);
   if (denied) return denied;
@@ -45,14 +55,15 @@ export async function PUT(req: Request, { params }: Ctx) {
     );
     return NextResponse.json(out);
   } catch (e) {
+    console.error("[admin/posts] save", e);
     const msg = (e as Error).message;
     // 409/422 from GitHub: the file changed since it was loaded, or already exists.
     const status = /\((409|422)\)/.test(msg) ? 409 : 502;
     return NextResponse.json({ error: msg }, { status });
   }
-}
+});
 
-export async function DELETE(req: Request, { params }: Ctx) {
+export const DELETE = safely(async (req, { params }) => {
   const { id } = await params;
   const denied = await guard(id);
   if (denied) return denied;
@@ -62,6 +73,7 @@ export async function DELETE(req: Request, { params }: Ctx) {
     await deleteRepoPost(id, String(sha));
     return NextResponse.json({ ok: true });
   } catch (e) {
+    console.error("[admin/posts] delete", e);
     return NextResponse.json({ error: (e as Error).message }, { status: 502 });
   }
-}
+});

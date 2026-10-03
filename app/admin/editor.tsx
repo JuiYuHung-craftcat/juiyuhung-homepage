@@ -14,6 +14,17 @@ const slugify = (s: string) =>
     .replace(/^-+|-+$/g, "")
     .slice(0, 80);
 
+// Reads a JSON reply, or falls back to the status and raw text so failures are never silent.
+const readReply = async (res: Response) => {
+  const text = await res.text().catch(() => "");
+  try {
+    return JSON.parse(text) as Record<string, string>;
+  } catch {
+    const snippet = text.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 160);
+    return { error: `HTTP ${res.status}${res.statusText ? ` ${res.statusText}` : ""}${snippet ? `: ${snippet}` : ""}` };
+  }
+};
+
 const input =
   "w-full bg-transparent border-2 border-terminal_green/40 focus:border-terminal_green rounded px-2 py-1 outline-none";
 
@@ -80,7 +91,7 @@ export default function Editor({ initial }: { initial: EditablePost | null }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title, type, date, summary, body, sha }),
     });
-    const out = await res.json().catch(() => ({}));
+    const out = await readReply(res);
     if (!res.ok) {
       setStatus({
         kind: "error",
@@ -89,7 +100,7 @@ export default function Editor({ initial }: { initial: EditablePost | null }) {
             ? isNew
               ? "A post with this URL name already exists. Pick another one."
               : "This post was changed elsewhere since you opened it. Reload to get the latest version."
-            : (out.error ?? "Save failed."),
+            : (out.error ?? `Save failed (HTTP ${res.status}).`),
       });
       return;
     }
@@ -123,7 +134,7 @@ export default function Editor({ initial }: { initial: EditablePost | null }) {
       body: JSON.stringify({ sha }),
     });
     if (!res.ok) {
-      setStatus({ kind: "error", text: (await res.json().catch(() => ({}))).error ?? "Delete failed." });
+      setStatus({ kind: "error", text: (await readReply(res)).error ?? `Delete failed (HTTP ${res.status}).` });
       return;
     }
     setDirty(false);
