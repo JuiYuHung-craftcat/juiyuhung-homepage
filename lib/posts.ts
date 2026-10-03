@@ -3,79 +3,79 @@ import path from "path";
 import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
-import { ContainerWithChildren } from "postcss/lib/container";
 
 const postsDirectory = path.join(process.cwd(), "posts");
 
-interface PostsData {
+export interface PostMeta {
   id: string;
   title: string;
   date: string;
+  type: string;
+  summary: string;
+  readingMinutes: number;
 }
 
-export function getSortedPostsData() {
-  // Get file names under /posts
-  const fileNames = fs.readdirSync(postsDirectory);
-  const allPostsData: any = fileNames.map((fileName) => {
-    // Remove ".md" from file name to get id
-    const id = fileName.replace(/\.md$/, "");
+export interface Post extends PostMeta {
+  contentHtml: string;
+}
 
-    // Read markdown file as string
-    const fullPath = path.join(postsDirectory, fileName);
-    const fileContents = fs.readFileSync(fullPath, "utf8");
+const postFiles = () =>
+  fs.existsSync(postsDirectory)
+    ? fs.readdirSync(postsDirectory).filter((f) => f.endsWith(".md"))
+    : [];
 
-    // Use gray-matter to parse the post metadata section
-    const matterResult = matter(fileContents);
+// ~200 English words or ~400 CJK characters per minute.
+const readingMinutes = (text: string) => {
+  const cjk = (text.match(/[぀-ヿ㐀-鿿]/g) ?? []).length;
+  const words = text.replace(/[぀-ヿ㐀-鿿]/g, " ").split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 200 + cjk / 400));
+};
 
-    // Combine the data with the id
-    return {
-      id,
-      ...matterResult.data,
-    };
-  });
-  // Sort posts by date
-  return allPostsData.sort((a: PostsData, b: PostsData) => {
-    if (a.date < b.date) {
-      return 1;
-    } else {
-      return -1;
-    }
-  });
+// First paragraph of the post, stripped of markdown, as a fallback summary.
+const excerpt = (text: string) => {
+  const para =
+    text
+      .split(/\n\s*\n/)
+      .map((p) => p.trim())
+      .find((p) => p && !/^(#|```|!\[|>|---|\|)/.test(p)) ?? "";
+  const plain = para
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/[*_`\\]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  return plain.length > 160 ? `${plain.slice(0, 157)}...` : plain;
+};
+
+const readPost = (id: string) => {
+  const { data, content } = matter(fs.readFileSync(path.join(postsDirectory, `${id}.md`), "utf8"));
+  const meta: PostMeta = {
+    id,
+    title: String(data.title ?? id),
+    // gray-matter turns unquoted YYYY-MM-DD into a Date.
+    date: data.date instanceof Date ? data.date.toISOString().slice(0, 10) : String(data.date ?? ""),
+    type: String(data.type ?? "blog"),
+    summary: String(data.summary ?? excerpt(content)),
+    readingMinutes: readingMinutes(content),
+  };
+  return { meta, content };
+};
+
+export function getSortedPostsData(): PostMeta[] {
+  return postFiles()
+    .map((f) => readPost(f.replace(/\.md$/, "")).meta)
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
 export function getAllPostIds() {
-  const fileNames = fs.readdirSync(postsDirectory);
-  return fileNames.map((fileName) => {
-    return {
-      params: {
-        id: fileName.replace(/\.md$/, ""),
-      },
-    };
-  });
+  return postFiles().map((f) => ({ id: f.replace(/\.md$/, "") }));
 }
 
-export async function getPostData(id: string) {
-  const fullPath = path.join(postsDirectory, `${id}.md`);
-  const fileContents = fs.readFileSync(fullPath, "utf8");
+export async function markdownToHtml(markdown: string) {
+  return (await remark().use(html).process(markdown)).toString();
+}
 
-  // Use gray-matter to parse the post metadata section
-  const matterResult = matter(fileContents);
-
-  // Use remark to convert markdown into HTML string
-  const processedContent = await remark()
-    .use(html)
-    .process(matterResult.content);
-  let contentHtml = processedContent.toString();
-
-  // Add css to certain tag
-  contentHtml = contentHtml.replace("<h1>", "<h1 class='text-xl font-bold'>");
-  contentHtml = contentHtml.replace("<h2>", "<h2 class='text-lg font-bold'>");
-  contentHtml = contentHtml.replace("<h3>", "<h3 class='text-base'>");
-
-  // Combine the data with the id and contentHtml
-  return {
-    id,
-    contentHtml,
-    ...matterResult.data,
-  };
+export async function getPostData(id: string): Promise<Post> {
+  const { meta, content } = readPost(id);
+  return { ...meta, contentHtml: await markdownToHtml(content) };
 }

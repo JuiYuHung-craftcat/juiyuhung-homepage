@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import Name3D from "./(main)/name-3d";
+import BtcBacktest from "./(main)/btc-backtest";
 
 const Resume = () => {
   const [hydrated, setHydrated] = useState(false);
@@ -18,7 +19,7 @@ const Resume = () => {
           (
             Date.now() / (1000 * 60 * 60 * 24 * 365) -
             (2015 - 1970 + 10 / 12)
-          ).toFixed(8),
+          ).toFixed(8)
         );
       }, 10);
       return () => clearInterval(interval);
@@ -41,7 +42,9 @@ const Resume = () => {
             />
           </div>
           <div className="md:hidden flex items-center gap-4">
-            <p className="text-lg font-semibold hover:text-terminal_green transition-colors duration-300">Jui-Yu Hung</p>
+            <p className="text-lg font-semibold hover:text-terminal_green transition-colors duration-300">
+              Jui-Yu Hung
+            </p>
             <div className="hover:rotate-1 hover:scale-105 transition-transform duration-300 rounded-full overflow-hidden border-2 border-transparent hover:border-terminal_green">
               <Image
                 src="/avatar/avatar.jpg"
@@ -54,21 +57,27 @@ const Resume = () => {
         </div>
       </div>
       <div className="pt-8 animate-slide-up">
-        <h2 className="text-xl md:text-left text-center font-bold tracking-wide">ABOUT ME</h2>
+        <h2 className="text-xl md:text-left text-center font-bold tracking-wide">
+          ABOUT ME
+        </h2>
         <hr className="border-terminal_green my-2 border-2" />
         <p className="leading-relaxed hover:text-terminal_green transition-colors duration-500">
           Digital IC design engineer with{" "}
-          <span className="font-bold text-terminal_green animate-pulse">{tenure}</span> years of industry
-          experience. The products include TDMA, LTE, NR modem, AI accelerator,
-          high-speed IO(USB,HUB,DP,PCIe,Ethernet), TCP/IP protocol and HFT
-          system. Skilled at low cost, low power and low latency design.
-          Experienced in integration, front-end, middle-end and FPGA design flow.
-          Capable of building design verification environment in SystemVerilog &
-          UVM.
+          <span className="font-bold text-terminal_green animate-pulse">
+            {tenure}
+          </span>{" "}
+          years of industry experience. The products include TDMA, LTE, NR
+          modem, AI accelerator, high-speed IO(USB,HUB,DP,PCIe,Ethernet), TCP/IP
+          protocol and HFT system. Skilled at low cost, low power and low
+          latency design. Experienced in integration, front-end, middle-end and
+          FPGA design flow. Capable of building design verification environment
+          in SystemVerilog & UVM.
         </p>
       </div>
       <div className="pt-8 animate-slide-up">
-        <h2 className="text-xl md:text-left text-center font-bold tracking-wide">EDUCATIONS</h2>
+        <h2 className="text-xl md:text-left text-center font-bold tracking-wide">
+          EDUCATIONS
+        </h2>
         <hr className="border-terminal_green my-2 border-2" />
         <div className="flex justify-between hover:bg-terminal_green/5 p-2 rounded transition-all duration-300">
           <p className="font-bold md:text-base text-sm">
@@ -84,8 +93,12 @@ const Resume = () => {
           <p className="font-bold md:text-base text-sm">Jul. 2015</p>
         </div>
         <ul className="list-disc pl-4 md:text-sm text-xs space-y-1">
-          <li className="hover:text-terminal_green transition-colors duration-300">Expertise field: memory integrated circuit designs</li>
-          <li className="hover:text-terminal_green transition-colors duration-300">Major in High-Speed Memory Sense Amplifier design</li>
+          <li className="hover:text-terminal_green transition-colors duration-300">
+            Expertise field: memory integrated circuit designs
+          </li>
+          <li className="hover:text-terminal_green transition-colors duration-300">
+            Major in High-Speed Memory Sense Amplifier design
+          </li>
           <li className="hover:text-terminal_green transition-colors duration-300">
             Conducted Projects of SRAM, NV-TCAM, RRAM, NAND-Flash, 3D-TSV.
           </li>
@@ -98,11 +111,15 @@ const Resume = () => {
           <p className="font-bold md:text-base text-sm">Jun. 2013</p>
         </div>
         <ul className="list-disc pl-4 md:text-sm text-xs space-y-1">
-          <li className="hover:text-terminal_green transition-colors duration-300">Graduating in the honor of the top-rated prize</li>
+          <li className="hover:text-terminal_green transition-colors duration-300">
+            Graduating in the honor of the top-rated prize
+          </li>
         </ul>
       </div>
       <div className="pt-8 animate-slide-up">
-        <h2 className="text-xl md:text-left text-center font-bold tracking-wide">EMPLOYMENT</h2>
+        <h2 className="text-xl md:text-left text-center font-bold tracking-wide">
+          EMPLOYMENT
+        </h2>
         <hr className="border-terminal_green my-2 border-2" />
         <div className="flex justify-between hover:bg-terminal_green/5 p-3 rounded-lg transition-all duration-300 hover:scale-[1.02] border-l-2 border-transparent hover:border-terminal_green">
           <div>
@@ -136,11 +153,15 @@ const Resume = () => {
         </div>
       </div>
       <div className="pt-8 animate-slide-up">
-        <h2 className="text-xl md:text-left text-center font-bold tracking-wide">SKILLS</h2>
+        <h2 className="text-xl md:text-left text-center font-bold tracking-wide">
+          SKILLS
+        </h2>
         <hr className="border-terminal_green my-2 border-2" />
         <ul className="md:text-base text-sm space-y-4">
           <li className="hover:bg-terminal_green/5 p-3 rounded-lg transition-all duration-300">
-            <span className="font-bold text-terminal_green">Programming language:</span>
+            <span className="font-bold text-terminal_green">
+              Programming language:
+            </span>
             <br /> Verilog-2005, SystemVerilog, Tcl, C/C++, Perl, Lua, Rust,
             Javascript, Typescript, SQL
           </li>
@@ -190,36 +211,14 @@ const Resume = () => {
         </ul>
       </div>
       <div className="pt-8 animate-slide-up">
-        <h2 className="text-xl md:text-left text-center font-bold tracking-wide">SIDE PROJECTS</h2>
+        <h2 className="text-xl md:text-left text-center font-bold tracking-wide">
+          SIDE PROJECT
+        </h2>
         <hr className="border-terminal_green my-2 border-2" />
-        <div className="hover:bg-terminal_green/5 p-4 rounded-lg transition-all duration-300 border-l-4 border-transparent hover:border-terminal_green">
-          <p className="font-bold text-terminal_green text-lg">Crypto AI Trading System:</p>
-          <ul className="list-disc pl-4 md:text-base text-sm space-y-2 mt-2">
-            <li className="hover:translate-x-1 transition-transform duration-300">Language: Python, Typescript</li>
-            <li className="hover:translate-x-1 transition-transform duration-300">
-              Description: AI-powered cryptocurrency trading system with automated
-              strategy execution and real-time market analysis. Using Pytorch to train
-              model and do backtesting. Using Node.js to do live trading.
-            </li>
-            <li className="hover:translate-x-1 transition-transform duration-300">Features: Reinforcement Learning, Backtesting, ONNX</li>
-            <li className="hover:translate-x-1 transition-transform duration-300">
-              Project Status:{" "}
-              <span className="text-black bg-terminal_green px-2 py-1 rounded animate-pulse">Active</span>
-            </li>
-            <li className="hover:translate-x-1 transition-transform duration-300">
-              Interim results:
-            </li>
-          </ul>
-          <div className="pt-4 rounded-lg overflow-hidden">
-            <Image
-              src="/page/results.png"
-              alt="Crypto AI Trading Results"
-              width="800"
-              height="600"
-              className="w-full h-auto invert hover:scale-[1.02] transition-transform duration-500 cursor-pointer"
-            />
-          </div>
-        </div>
+        <h3 className="font-bold text-terminal_green text-lg pt-2">
+          Crypto BTC Strategy &amp; Backtest
+        </h3>
+        <BtcBacktest />
       </div>
     </section>
   );

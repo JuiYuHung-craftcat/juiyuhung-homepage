@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 export const Header = () => {
   const pathname = usePathname();
   const resumeCurrent = pathname == "/";
+  const postsCurrent = pathname.startsWith("/posts");
   return (
     <header className="fixed w-full p-2 z-20 backdrop-blur-md">
       <div className="mx-auto max-w-3xl">
@@ -24,6 +25,15 @@ export const Header = () => {
                 href="/"
               >
                 RESUME
+              </a>
+              <a
+                className={
+                  "hover:underline decoration-2 " +
+                  (postsCurrent ? "text-black bg-terminal_green" : "")
+                }
+                href="/posts"
+              >
+                POSTS
               </a>
               <a
                 className="hover:underline decoration-2"
