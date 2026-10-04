@@ -42,7 +42,7 @@ export const Header = () => {
             </a>
           </div>
           <a
-            href="mailto:HI@JUIYUHUNG.COM"
+            href="mailto:hi@juiyuhung.com"
             className="order-2 md:order-3 bg-terminal_green text-black md:px-4 px-3 md:py-2 py-1.5 rounded-lg hover:bg-terminal_green/80 transition-colors duration-300 flex items-center gap-2 font-semibold md:text-base text-sm max-[359px]:text-xs max-[359px]:px-2"
           >
             <svg
@@ -54,7 +54,7 @@ export const Header = () => {
               <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
               <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
             </svg>
-            <span>hi@juiyuhung.com</span>
+            <span>HI@JUIYUHUNG.COM</span>
           </a>
         </nav>
       </div>
