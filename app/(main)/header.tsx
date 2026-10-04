@@ -42,7 +42,7 @@ export const Header = () => {
             </a>
           </div>
           <a
-            href="mailto:hi@juiyuhung.com"
+            href="mailto:HI@JUIYUHUNG.COM"
             className="order-2 md:order-3 bg-terminal_green text-black md:px-4 px-3 md:py-2 py-1.5 rounded-lg hover:bg-terminal_green/80 transition-colors duration-300 flex items-center gap-2 font-semibold md:text-base text-sm max-[359px]:text-xs max-[359px]:px-2"
           >
             <svg
