@@ -6,10 +6,11 @@ export const Header = () => {
   const pathname = usePathname();
   const resumeCurrent = pathname == "/";
   const postsCurrent = pathname.startsWith("/posts");
+  const gameCurrent = pathname.startsWith("/game");
   return (
     <header className="fixed w-full p-2 z-20 backdrop-blur-md">
       <div className="mx-auto max-w-3xl">
-        <nav className="flex flex-wrap md:flex-nowrap items-center justify-between gap-y-1 md:gap-12 text-base">
+        <nav className="flex flex-wrap md:flex-nowrap items-center justify-between gap-y-1 md:gap-6 text-base">
           <a href="/" className="group order-1">
             <h2 className="font-semibold tracking-tighter p-2 font-mplus md:text-xl text-lg">
               [JUIYUHUNG]$
@@ -33,6 +34,15 @@ export const Header = () => {
               href="/posts"
             >
               POSTS
+            </a>
+            <a
+              className={
+                "hover:underline decoration-2 " +
+                (gameCurrent ? "text-black bg-terminal_green" : "")
+              }
+              href="/game"
+            >
+              GAME
             </a>
             <a
               className="hover:underline decoration-2"
