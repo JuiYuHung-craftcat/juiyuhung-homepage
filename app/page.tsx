@@ -19,7 +19,7 @@ const Resume = () => {
           (
             Date.now() / (1000 * 60 * 60 * 24 * 365) -
             (2015 - 1970 + 10 / 12)
-          ).toFixed(8)
+          ).toFixed(8),
         );
       }, 10);
       return () => clearInterval(interval);
@@ -59,7 +59,7 @@ const Resume = () => {
           protocol and HFT system. Skilled at low cost, low power and low
           latency design. Experienced in integration, front-end, middle-end and
           FPGA design flow. Capable of building design verification environment
-          in SystemVerilog & UVM.
+          in SystemVerilog.
         </p>
       </div>
       <div className="pt-8 animate-slide-up">
