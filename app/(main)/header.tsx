@@ -42,7 +42,7 @@ export const Header = () => {
               }
               href="/game"
             >
-              GAME
+              TERMINAL
             </a>
             <a
               className="hover:underline decoration-2"
