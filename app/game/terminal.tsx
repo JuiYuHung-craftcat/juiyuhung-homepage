@@ -125,6 +125,129 @@ const Hl = ({ children }: { children: ReactNode }) => (
   <span className="text-white font-bold">{children}</span>
 );
 
+// ---------------------------------------------------------------------------
+// Fun stuff: animated outputs
+// ---------------------------------------------------------------------------
+
+// Reveals lines one at a time, like a slow build log.
+const Typer = ({ lines, delay = 300 }: { lines: string[]; delay?: number }) => {
+  const [n, setN] = useState(1);
+  useEffect(() => {
+    if (n >= lines.length) return;
+    const t = setTimeout(() => setN(n + 1), delay);
+    return () => clearTimeout(t);
+  }, [n, lines.length, delay]);
+  return <>{lines.slice(0, n).join("\n")}</>;
+};
+
+const TRAIN = [
+  "      _____     ________________   ________________",
+  "  ___|_[]__|___|  MARKET DATA   |_|    ORDERS      |",
+  " |  JYH-EXPRESS |  ~ 0.4 us ~   | |  ~ 0.2 us ~    |",
+  " |______________|________________|_|________________|",
+  "  '-(O)--(O)-'    '-(O)----(O)-'     '-(O)----(O)-'",
+];
+
+const Train = () => {
+  const width = 64;
+  const trainLen = Math.max(...TRAIN.map((l) => l.length));
+  const [off, setOff] = useState(width);
+  useEffect(() => {
+    if (off < -trainLen) return;
+    const t = setTimeout(() => setOff(off - 1), 30);
+    return () => clearTimeout(t);
+  }, [off, trainLen]);
+  if (off < -trainLen) return <>Choo choo! Low-latency express has departed.</>;
+  return (
+    <div className="overflow-hidden whitespace-pre text-amber-300">
+      {TRAIN.map((l) =>
+        (" ".repeat(Math.max(0, off)) + l.slice(Math.max(0, -off))).slice(0, width),
+      ).join("\n")}
+    </div>
+  );
+};
+
+const Matrix = () => {
+  const ref = useRef<HTMLCanvasElement>(null);
+  const [done, setDone] = useState(false);
+  useEffect(() => {
+    const canvas = ref.current;
+    const ctx = canvas?.getContext("2d");
+    if (!canvas || !ctx) return;
+    canvas.width = canvas.offsetWidth;
+    canvas.height = 180;
+    const size = 14;
+    const drops = Array(Math.ceil(canvas.width / size)).fill(0).map(() => Math.random() * -20);
+    const glyphs = "01アイウエオカキクケコ<>{}[]$#&*+=";
+    const id = setInterval(() => {
+      ctx.fillStyle = "rgba(0,0,0,0.15)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#00BB00";
+      ctx.font = `${size}px monospace`;
+      drops.forEach((y, i) => {
+        ctx.fillText(glyphs[Math.floor(Math.random() * glyphs.length)], i * size, y * size);
+        drops[i] = y * size > canvas.height && Math.random() > 0.95 ? 0 : y + 1;
+      });
+    }, 50);
+    const stop = setTimeout(() => {
+      clearInterval(id);
+      setDone(true);
+    }, 4000);
+    return () => {
+      clearInterval(id);
+      clearTimeout(stop);
+    };
+  }, []);
+  return (
+    <div>
+      <canvas ref={ref} className="w-full h-[180px] rounded" />
+      {done && <p>Signal decoded: the résumé was the matrix all along.</p>}
+    </div>
+  );
+};
+
+const cowsay = (msg: string) => {
+  const text = msg || "Moo. Hire this engineer.";
+  const bar = "-".repeat(text.length + 2);
+  return ` ${"_".repeat(text.length + 2)}
+< ${text} >
+ ${bar}
+        \\   ^__^
+         \\  (oo)\\_______
+            (__)\\       )\\/\\
+                ||----w |
+                ||     ||`;
+};
+
+const FORTUNES = [
+  "Simulation passes. Silicon disagrees.",
+  "A clock domain crossing without a synchronizer is a bug report waiting to happen.",
+  "Metastability: when a flip-flop can't make up its mind, and neither can you.",
+  "Measure latency in nanoseconds. Measure coffee in liters.",
+  "There are 10 kinds of people: those who understand binary and those who don't.",
+  "Premature optimization is the root of all evil. Unless you work in HFT.",
+  "The market is open for a few hours a day. The bugs are open 24/7.",
+  "Timing closure is just negotiation between you and physics.",
+  "If it works in FPGA, ship it. If it works in ASIC, throw a party.",
+  "Every nanosecond saved is a nanosecond earned.",
+];
+
+const pick = <T,>(arr: T[]) => arr[Math.floor(Math.random() * arr.length)];
+
+const FUN: [string, string][] = [
+  ["cowsay <msg>", "a cow says your message"],
+  ["fortune", "random engineering wisdom"],
+  ["sl", "the low-latency express rolls by"],
+  ["matrix", "enter the green rain"],
+  ["hack", "hack the mainframe (sort of)"],
+  ["make", "synthesize JuiYuHung"],
+  ["ping <host>", "measure latency to an exchange"],
+  ["stonks", "check the JYH ticker"],
+  ["coin / roll [n]", "flip a coin, roll a die"],
+  ["coffee", "brew some coffee"],
+  ["sudo hire", "the best command of all"],
+];
+
 const listDir = (node: DirNode, all: boolean) => {
   const names = Object.keys(node.children).filter((n) => all || !n.startsWith("."));
   return (
@@ -173,6 +296,7 @@ const HELP: [string, string][] = [
   ["publications", "shortcut: papers and patents"],
   ["contact", "how to reach me"],
   ["neofetch", "system info, résumé edition"],
+  ["fun", "list the fun commands"],
   ["open <resume|posts|github|mail>", "open a page"],
   ["history", "previous commands"],
   ["clear", "clear the screen (Ctrl+L)"],
@@ -180,11 +304,16 @@ const HELP: [string, string][] = [
 
 const COMMANDS = [
   ...HELP.map(([c]) => c.split(" ")[0]),
+  ...FUN.flatMap(([c]) => c.split(" / ").map((s) => s.split(" ")[0])),
   "echo",
   "date",
   "uname",
-  "sudo",
+  "uptime",
   "exit",
+  "vim",
+  "emacs",
+  "rm",
+  "hire",
 ];
 
 const BANNER = (
@@ -201,7 +330,9 @@ const BANNER = (
       Welcome to JuiYuHung&apos;s résumé shell. Type <Hl>help</Hl> to see commands, or try{" "}
       <Hl>ls</Hl>, <Hl>cat about.txt</Hl>, <Hl>experience</Hl>.
     </p>
-    <p className="opacity-60">Tab completes, ↑/↓ walks history.</p>
+    <p className="opacity-60">
+      Tab completes, ↑/↓ walks history. Bored? Type <Hl>fun</Hl>.
+    </p>
   </div>
 );
 
@@ -221,9 +352,19 @@ export default function Terminal() {
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  // Keep the view pinned to the bottom, including while animated output grows.
   useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
-  }, [entries]);
+    const el = scrollRef.current;
+    const content = contentRef.current;
+    if (!el || !content) return;
+    const toBottom = () => el.scrollTo({ top: el.scrollHeight });
+    toBottom();
+    const ro = new ResizeObserver(toBottom);
+    ro.observe(content);
+    return () => ro.disconnect();
+  }, []);
 
   const prompt = fmtPath(cwd);
 
@@ -344,7 +485,113 @@ export default function Terminal() {
       case "uname":
         return { output: flags.length ? "JuiYuHungOS 2015.11 silicon-x86_64 GNU/Verilog" : "JuiYuHungOS" };
       case "sudo":
-        return { output: "guest is not in the sudoers file. This incident will be reported. 🙂" };
+        if (args[0] === "hire") return run("hire");
+        return { output: "guest is not in the sudoers file. This incident will be reported. 🙂\n(Hint: some sudo commands are allowed. Try `sudo hire`.)" };
+      case "hire":
+        window.open("mailto:hi@juiyuhung.com?subject=Let's%20work%20together", "_blank");
+        return {
+          output: (
+            <Typer
+              lines={[
+                "[sudo] password for guest: ********",
+                "Verifying good taste... ✔",
+                "Checking headcount... ✔",
+                "Permission granted. Opening your mail client 📬",
+              ]}
+            />
+          ),
+        };
+      case "fun":
+        return {
+          output: (
+            <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-0.5">
+              {FUN.map(([c, d]) => (
+                <div key={c} className="contents">
+                  <Hl>{c}</Hl>
+                  <span className="opacity-80">{d}</span>
+                </div>
+              ))}
+            </div>
+          ),
+        };
+      case "cowsay":
+        return { output: cowsay(args.join(" ")) };
+      case "fortune":
+        return { output: pick(FORTUNES) };
+      case "sl":
+        return { output: <Train /> };
+      case "matrix":
+        return { output: <Matrix /> };
+      case "hack":
+        return {
+          output: (
+            <Typer
+              delay={350}
+              lines={[
+                "Initializing hack.exe ...",
+                "Bypassing firewall    [██████████] 100%",
+                "Decrypting mainframe  [██████████] 100%",
+                "Downloading secrets   [██████████] 100%",
+                "",
+                "ACCESS GRANTED ✔",
+                "Secret #1: the résumé was public the whole time.",
+                "Try `cat about.txt` 😉",
+              ]}
+            />
+          ),
+        };
+      case "make":
+      case "synth":
+        return {
+          output: (
+            <Typer
+              lines={[
+                "make: entering directory '~/juiyuhung'",
+                "[RTL]   Reading 11 years of experience ...",
+                "[ELAB]  Elaborating top module: juiyuhung_core",
+                "[SYN]   Optimizing for low cost, low power, low latency ...",
+                "[STA]   WNS = +0.042 ns   TNS = 0.000 ns   (timing met ✔)",
+                "[PWR]   Total power: 1 cup of coffee per hour",
+                "[AREA]  1 engineer, fully routed",
+                "Build succeeded. Ready for tape-out (and job offers).",
+              ]}
+            />
+          ),
+        };
+      case "ping": {
+        const host = targets[0] ?? "twse";
+        const lines = [`PING ${host}: 64 data bytes`];
+        for (let i = 1; i <= 4; i++)
+          lines.push(`64 bytes from ${host}: seq=${i} time=${(Math.random() * 400 + 200).toFixed(0)} ns`);
+        lines.push(`--- ${host} ping statistics ---`, "4 packets sent, 4 received. Fast enough to trade on. 🚀");
+        return { output: <Typer lines={lines} delay={400} /> };
+      }
+      case "stonks": {
+        const pct = (Math.random() * 50 + 10).toFixed(2);
+        return {
+          output: `JYH  ▲ +${pct}%   📈  Analysts: "strong buy"
+Fundamentals: ${tenure()} years of experience, 1 patent, 2 papers, 0 known bugs*
+* known to the analysts`,
+        };
+      }
+      case "coin":
+        return { output: `🪙 ${Math.random() < 0.5 ? "Heads" : "Tails"}` };
+      case "roll": {
+        const sides = Math.max(2, parseInt(targets[0] ?? "6", 10) || 6);
+        return { output: `🎲 You rolled a ${1 + Math.floor(Math.random() * sides)} (d${sides})` };
+      }
+      case "coffee":
+        return { output: "Error 418: I'm a teapot. ☕ Brewing anyway... done. Productivity +20%." };
+      case "uptime":
+        return { output: `up ${tenure()} years, 1 user, load average: low latency, low power, low cost` };
+      case "vim":
+        return { output: "Entering vim... you will never escape. (Just kidding. Try :q and pray.)" };
+      case "emacs":
+        return { output: "emacs: a great operating system, lacking only a decent editor. Try `vim`?" };
+      case "rm":
+        if (flags.some((f) => f.includes("r")))
+          return { output: `rm: refusing to delete ${tenure()} years of hard work. Nice try. 🙂` };
+        return { output: "rm: this is a read-only résumé." };
       case "exit":
         return { output: "There is no escape. Try `open resume` instead." };
       case "clear":
@@ -439,7 +686,7 @@ export default function Terminal() {
     </span>
   );
 
-  const QUICK = ["help", "whoami", "ls", "experience", "skills", "neofetch", "clear"];
+  const QUICK = ["help", "whoami", "ls", "experience", "skills", "fun", "matrix", "clear"];
 
   return (
     <div className="space-y-3">
@@ -457,6 +704,7 @@ export default function Terminal() {
           }}
           className="h-[65vh] min-h-[320px] overflow-y-auto p-3 md:p-4 font-mono text-xs md:text-sm leading-relaxed cursor-text"
         >
+          <div ref={contentRef}>
           {entries.map((en) => (
             <div key={en.id} className="mb-1">
               {en.prompt !== undefined && (
@@ -485,6 +733,7 @@ export default function Terminal() {
               aria-label="Terminal input"
               className="flex-1 min-w-0 bg-transparent outline-none text-zinc-100 caret-terminal_green"
             />
+          </div>
           </div>
         </div>
       </div>
