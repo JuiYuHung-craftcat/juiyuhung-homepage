@@ -7,8 +7,8 @@ summary: "An introduction to the two pipes every Taiwan equities trading system 
 
 Every trading system on the Taiwan Stock Exchange (TWSE) talks to the exchange through two very different pipes:
 
-1. **The IP quote feed** (IP 行情網路), which pushes market data *to* you.
-2. **The FIX order gateway** (FIX 電文), which carries your orders *to* the exchange and execution reports back.
+1. **The IP quote feed**, which pushes market data *to* you.
+2. **The FIX order gateway**, which carries your orders *to* the exchange and execution reports back.
 
 This post is a map of both: what the messages look like, how they're framed, and what to watch out for when you build a parser or gateway, in software or on an FPGA.
 
@@ -23,13 +23,13 @@ The TWSE feed is a stream of fixed-layout binary records. Each record has the sa
 | Field | Size | Encoding | Notes |
 |---|---|---|---|
 | ESC-CODE | 1 byte | ASCII 27 (`0x1B`) | Start-of-record marker |
-| Message length (訊息長度) | 2 bytes | Packed BCD | Length of the **whole** record, ESC through terminal code |
-| Business type (業務別) | 1 byte | Packed BCD | `01` = TWSE listed market, `02` = TPEx (OTC) |
-| Format code (傳輸格式代碼) | 1 byte | Packed BCD | Which message this is, e.g. `06` |
-| Format version (傳輸格式版別) | 1 byte | Packed BCD | Versioned independently per format |
-| Sequence number (傳輸序號) | 4 bytes | Packed BCD | Starts at 1 each day, **counted per format** |
+| Message length | 2 bytes | Packed BCD | Length of the **whole** record, ESC through terminal code |
+| Business type | 1 byte | Packed BCD | `01` = TWSE listed market, `02` = TPEx (OTC) |
+| Format code | 1 byte | Packed BCD | Which message this is, e.g. `06` |
+| Format version | 1 byte | Packed BCD | Versioned independently per format |
+| Sequence number | 4 bytes | Packed BCD | Starts at 1 each day, **counted per format** |
 | Body | varies | | Format-specific |
-| Checksum (檢查碼) | 1 byte | XOR | XOR over the record content |
+| Checksum | 1 byte | XOR | XOR over the record content |
 | TERMINAL-CODE | 2 bytes | `0x0D 0x0A` | End-of-record marker |
 
 A few design choices stand out:
@@ -42,18 +42,18 @@ A few design choices stand out:
 
 The feed carries dozens of formats. Two of them show up in every trading system:
 
-- **Format 1: stock basic information (個股基本資料).** Sent before the open. Reference price, limit-up and limit-down prices, the stock's name and various status flags. This is your static data for the day.
-- **Format 6: real-time quotes for listed common stocks (集中市場普通股即時行情).** The hot path: last trade price and volume plus the best five bid and ask levels.
+- **Format 1: stock basic information.** Sent before the open. Reference price, limit-up and limit-down prices, the stock's name and various status flags. This is your static data for the day.
+- **Format 6: real-time quotes for listed common stocks.** The hot path: last trade price and volume plus the best five bid and ask levels.
 
 ### Inside Format 6
 
-Since TWSE moved to **continuous trading (逐筆交易)** in March 2020, Format 6 updates arrive per event instead of in periodic batch snapshots. Conceptually, a Format 6 body contains:
+Since TWSE moved to **continuous trading** in March 2020, Format 6 updates arrive per event instead of in periodic batch snapshots. Conceptually, a Format 6 body contains:
 
 1. **Stock code**: 6 bytes, ASCII, space-padded (e.g. `2330  `).
-2. **Match time (撮合時間)**: packed BCD, down to the microsecond.
-3. **Display item flags (揭示項目註記)**: one bitmap byte saying what follows: whether a trade price and volume is included, and how many bid and ask levels (0 to 5) are present.
-4. **Limit-up/down and status flags (漲跌停註記 / 狀態註記)**: whether the price is pinned at a limit, trial matching (試撮), and so on.
-5. **Cumulative volume (累計成交數量)**.
+2. **Match time**: packed BCD, down to the microsecond.
+3. **Display item flags**: one bitmap byte saying what follows: whether a trade price and volume is included, and how many bid and ask levels (0 to 5) are present.
+4. **Limit-up/down and status flags**: whether the price is pinned at a limit, trial matching, and so on.
+5. **Cumulative volume**.
 6. **A variable number of price/volume pairs**: the trade (if flagged) followed by the bid levels and then the ask levels. Prices are packed BCD with implied decimals.
 
 The key point for parser design is that **the body length is variable** and only the flag byte tells you how many pairs follow. Decode the bitmap first, then walk the pairs. In hardware, that bitmap drives a small state machine or a mux that steers each 9-byte price/volume slot to the right register.
@@ -112,7 +112,7 @@ A `NewOrderSingle` uses the familiar tags, each with local conventions:
 - **OrderQty (38)**: check the unit carefully. Board-lot and odd-lot orders are handled differently.
 - **OrdType (40)**: market or limit.
 - **TimeInForce (59)**: Taiwan traders say **ROD** (Rest of Day, FIX `0` = Day), **IOC** (`3`) and **FOK** (`4`).
-- **ClOrdID (11)** and **OrderID (37)**: your client order ID, and the exchange-side order number (委託書編號) that ties the order to the broker's books.
+- **ClOrdID (11)** and **OrderID (37)**: your client order ID, and the exchange-side order number that ties the order to the broker's books.
 
 ### TWSE custom tags
 
@@ -130,7 +130,7 @@ These are the tags most likely to trip up a generic FIX engine. They're required
 
 - **Sequence numbers are sacred.** Persist your inbound and outbound sequence numbers. A careless reset at reconnect turns into rejected logons or replayed orders.
 - **Expect throttles.** The exchange enforces per-session rate limits. Pace orders in the gateway instead of relying on rejects to tell you you're too fast.
-- **Odd lots are a separate world.** Since intraday odd-lot trading (盤中零股) launched, odd-lot orders flow through their own session type and code values. Keep them separate in your order model.
+- **Odd lots are a separate world.** Since intraday odd-lot trading launched, odd-lot orders flow through their own session type and code values. Keep them separate in your order model.
 - **The latency budget lives in the parser.** FIX is text (`tag=value<SOH>`). For low-latency gateways, pre-build the static part of each message, and only patch price, quantity, ClOrdID, checksum and body length on the hot path.
 
 ## Putting it together
@@ -151,6 +151,6 @@ The quote side is a binary, BCD-packed, broadcast stream that rewards careful fr
 
 ## References
 
-- TWSE, *資訊傳輸作業手冊 (IP 行情網路)*, the IP market data specification: [twse.com.tw](https://www.twse.com.tw/staticFiles/product/broker/ff80808166388ea1016676ac085501de.pdf)
-- TWSE, *FIX 4.4 電文規範 作業手冊*, the FIX order entry specification: [twse.com.tw](https://www.twse.com.tw/staticFiles/product/broker/b002000176.doc)
-- TPEx, *上櫃股票 IP 行情網路規格書*, the OTC market equivalent: [tpex.org.tw](https://www.tpex.org.tw/storage/eb_data/11209/1120500723-1.pdf)
+- TWSE, *Information Transmission Manual (IP Market Data Network)* (Chinese edition), the IP market data specification: [twse.com.tw](https://www.twse.com.tw/staticFiles/product/broker/ff80808166388ea1016676ac085501de.pdf)
+- TWSE, *FIX 4.4 Message Specification* (Chinese edition), the FIX order entry specification: [twse.com.tw](https://www.twse.com.tw/staticFiles/product/broker/b002000176.doc)
+- TPEx, *OTC Stock IP Market Data Specification* (Chinese edition), the OTC market equivalent: [tpex.org.tw](https://www.tpex.org.tw/storage/eb_data/11209/1120500723-1.pdf)

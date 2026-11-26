@@ -5,9 +5,9 @@ type: trading
 summary: "An introduction to trading on the Taiwan Futures Exchange: the I-coded market data feed (I010, I020, I080, I081…) and TMP, TAIFEX's binary order entry protocol with its L-series session and R-series order messages."
 ---
 
-The Taiwan Futures Exchange (TAIFEX, 臺灣期貨交易所) lists TAIEX futures (TX), mini-TAIEX (MTX), TAIEX options (TXO), stock futures and more. Like TWSE, it gives you two pipes:
+The Taiwan Futures Exchange (TAIFEX) lists TAIEX futures (TX), mini-TAIEX (MTX), TAIEX options (TXO), stock futures and more. Like TWSE, it gives you two pipes:
 
-1. **The quote feed** (行情資訊傳輸網路): market data pushed to you over IP.
+1. **The quote feed**: market data pushed to you over IP.
 2. **TMP (TAIFEX Message Protocol)**: TAIFEX's own **binary** order entry protocol over TCP. TAIFEX also offers FIX, but TMP is the native, compact option and the usual choice for latency-sensitive systems.
 
 This post walks through both at an introductory level.
@@ -39,14 +39,14 @@ Every TAIFEX market data message begins with an envelope that looks familiar if 
 
 | I-code | What it is | When |
 |---|---|---|
-| **I010** | Product basic info (商品基本資料): product ID, reference price, limits, and the **decimal locator** for prices | Before the open |
-| **I020** | Trade price and volume (成交價量揭示) | Intraday |
+| **I010** | Product basic info: product ID, reference price, limits, and the **decimal locator** for prices | Before the open |
+| **I020** | Trade price and volume | Intraday |
 | **I021** | Intraday high and low | Intraday |
-| **I080** | Best five levels, bid and ask (委託簿揭示), sent when the top five change | Intraday |
-| **I081** | Order book *update* message in the continuous (逐筆) feed: incremental changes to the book | Intraday |
+| **I080** | Best five levels, bid and ask, sent when the top five change | Intraday |
+| **I081** | Order book *update* message in the continuous feed: incremental changes to the book | Intraday |
 | **I140** | System and status notices | As needed |
 
-The legacy feed batches trade prints (roughly every 125 ms in the 2025 manual) and republishes the full best five whenever any of them changes. TAIFEX also publishes a separate **continuous (逐筆) market data feed** with its own manual. There, the book is maintained **incrementally** with I081 updates, and snapshot messages let you (re)build state.
+The legacy feed batches trade prints (roughly every 125 ms in the 2025 manual) and republishes the full best five whenever any of them changes. TAIFEX also publishes a separate **continuous market data feed** with its own manual. There, the book is maintained **incrementally** with I081 updates, and snapshot messages let you (re)build state.
 
 ### Prices need I010
 
@@ -76,7 +76,7 @@ TMP is not tag=value. Every message is a **fixed-length binary struct** with a c
 - No ambiguity: lengths are known up front, and a trailing checksum guards integrity.
 - Very small messages compared to FIX, which matters for wire latency and for serialization cost.
 
-The common header carries the message length, a per-session sequence number, a timestamp, the **message type**, and the identity of the sender: the **FCM** (futures commission merchant, 期貨商) ID and the session ID.
+The common header carries the message length, a per-session sequence number, a timestamp, the **message type**, and the identity of the sender: the **FCM** (futures commission merchant) ID and the session ID.
 
 ### Two families: L for link, R for request and report
 
@@ -112,9 +112,9 @@ An R01 carries the information you'd expect from any futures order, each as a fi
 - **Product ID**, in either the numeric or the text product-ID format, depending on symbol type (hence the R01/R31 split).
 - **Price** and **quantity**: integers, using the product's decimal convention.
 - **Side**: buy or sell.
-- **Order type**: market, limit, or market-with-protection (範圍市價).
+- **Order type**: market, limit, or market-with-protection.
 - **Time in force**: ROD, IOC or FOK.
-- **Position effect** (開平倉碼): open, close, day trade, or let the exchange decide.
+- **Position effect**: open, close, day trade, or let the exchange decide.
 - **Investor account and flags**, the FCM's **order number**, and a **user-defined field** you can use to correlate reports back to your own state.
 
 R02 reports echo the order identity and add the exchange status: accepted, filled (with price and quantity), cancelled, plus remaining quantity. R03 tells you why something was rejected.
@@ -141,6 +141,6 @@ If you're building a hardware-accelerated futures system in Taiwan, TMP plus the
 ## References
 
 - TAIFEX, *TCP/IP TMP Messaging Specifications* (English, v2.13.0): [taifex.com.tw](https://www.taifex.com.tw/file/taifex/eng/eng11/TechDocs/6/Taifex_TCPIP_TMP_v2.13.0.pdf)
-- TAIFEX, *TCP/IP TMP 電文規範* (Chinese, v2.18.8, 2026/03/18), the latest: [taifex.com.tw](https://www.taifex.com.tw/file/taifex/CHINESE/11/TechDocs/4/%E6%9C%9F%E4%BA%A4%E6%89%80TCPIP_TMP_v2.18.8.pdf)
-- TAIFEX, *資訊傳輸作業手冊 (行情資訊傳輸網路)* v2.31.0, the quote feed: [taifex.com.tw](https://www.taifex.com.tw/file/taifex/CHINESE/11/TechDocs/66/%E8%B3%87%E8%A8%8A%E5%82%B3%E8%BC%B8%E4%BD%9C%E6%A5%AD%E6%89%8B%E5%86%8A(V2.31.0).pdf)
-- TAIFEX, *逐筆行情資訊傳輸作業手冊* v1.11.0, the continuous quote feed: [taifex.com.tw](https://www.taifex.com.tw/file/taifex/CHINESE/11/TechDocs/67/%E9%80%90%E7%AD%86%E8%A1%8C%E6%83%85%E8%B3%87%E8%A8%8A%E5%82%B3%E8%BC%B8%E4%BD%9C%E6%A5%AD%E6%89%8B%E5%86%8A(V1.11.0).pdf)
+- TAIFEX, *TCP/IP TMP Messaging Specifications* v2.18.8 (2026/03/18, Chinese edition), the latest: [taifex.com.tw](https://www.taifex.com.tw/file/taifex/CHINESE/11/TechDocs/4/%E6%9C%9F%E4%BA%A4%E6%89%80TCPIP_TMP_v2.18.8.pdf)
+- TAIFEX, *Market Data Transmission Manual* v2.31.0 (Chinese edition), the quote feed: [taifex.com.tw](https://www.taifex.com.tw/file/taifex/CHINESE/11/TechDocs/66/%E8%B3%87%E8%A8%8A%E5%82%B3%E8%BC%B8%E4%BD%9C%E6%A5%AD%E6%89%8B%E5%86%8A(V2.31.0).pdf)
+- TAIFEX, *Continuous-Trading Market Data Transmission Manual* v1.11.0 (Chinese edition), the continuous quote feed: [taifex.com.tw](https://www.taifex.com.tw/file/taifex/CHINESE/11/TechDocs/67/%E9%80%90%E7%AD%86%E8%A1%8C%E6%83%85%E8%B3%87%E8%A8%8A%E5%82%B3%E8%BC%B8%E4%BD%9C%E6%A5%AD%E6%89%8B%E5%86%8A(V1.11.0).pdf)
